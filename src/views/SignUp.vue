@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import UserService from '@/services/UserService'
+import AuthService from '@/services/AuthService'
 import Panel from '@/components/Panel.vue'
 
 export default {
@@ -34,7 +34,7 @@ export default {
         ...mapGetters(['isUserSignedIn'])
     },
     methods: {
-        ...mapActions(['setLoading', 'setMsg', 'updateTokenAndUser']),
+        ...mapActions(['setLoading', 'setMsg', 'setIsUserSignedIn']),
         async doSignUp() {
 
             //TODO VALIDATION
@@ -46,9 +46,9 @@ export default {
             this.setLoading(true)
 
             try {
-                const resp = await UserService.signUp({ "phone": this.phone, "name": this.name, "password": this.password, "confirm": this.confirm })
-                this.updateTokenAndUser({ user: { phone: resp.data.phone, name: resp.data.name, restaurantId: resp.data.restaurantId }, accessToken: resp.data.access_token, refreshToken: resp.data.refresh_token })
-            
+                const resp = await AuthService.signUp({ "phone": this.phone, "name": this.name, "password": this.password, "confirm": this.confirm })
+                this.setIsUserSignedIn(true)
+
                 this.setMsg("Signed Up")
                 setTimeout(() => { this.setMsg(null) }, 1500)
             } catch (err) {

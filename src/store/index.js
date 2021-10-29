@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import TokenService from '@/services/TokenService'
 
 export default createStore({
   state: {
@@ -6,12 +7,8 @@ export default createStore({
     isLoading: false,
 
     // User
-    user: {},
+    user: TokenService.getUser(),
     isUserSignedIn: false,
-
-    // Token
-    accessToken: null,
-    refreshToken: null,
 
     // Restaurant Data
     orders: [],
@@ -24,19 +21,8 @@ export default createStore({
     setLoading: (state, data) => {
       state.isLoading = data
     },
-    updateUser: (state, user) => {
-      state.user = user
-    },
-    updateAccessToken: (state, accessToken) => {
-      state.accessToken = accessToken
-      if (state.accessToken) {
-        state.isUserSignedIn = true
-      } else {
-        state.isUserSignedIn = false
-      }
-    },
-    updateRefreshToken: (state, refreshToken) => {
-      state.refreshToken = refreshToken
+    setIsUserSignedIn: (state, data) => {
+      state.isUserSignedIn = data
     },
     saveToOrders: (state, orders) => {
       state.orders = orders
@@ -48,14 +34,13 @@ export default createStore({
   actions: {
     setMsg: ({commit}, data) => {
       commit('setMsg', data)
+      setTimeout(() => { commit('setMsg', null) }, 1500)
     },
     setLoading: ({commit}, data) => {
       commit('setLoading', data)
     },
-    updateTokenAndUser: ({commit}, { user, accessToken, refreshToken }) => {
-      commit('updateUser', user)
-      commit('updateAccessToken', accessToken)
-      commit('updateRefreshToken', refreshToken)
+    setIsUserSignedIn: ({commit}, data) => {
+      commit('setIsUserSignedIn', data);
     },
     closeMsg: ({commit}) => {
       commit('setMsg', { msg: null, isErr: null })
@@ -73,10 +58,10 @@ export default createStore({
   getters: {
     msg: state => state.msg,
     isLoading: state => state.isLoading,
-    user: state => state.user,
     isUserSignedIn: state => state.isUserSignedIn,
+    user: state => state.user,
     orders: state => state.orders,
     restaurant: state => state.restaurant,
-    getCategory: state => name => state.restaurant.categoryList.find(category => category.name == name)
+    getCategory: state => name => state.restaurant.categoryList.find(category => category.name == name),
   }
 })

@@ -63,7 +63,6 @@ export default {
             this.category.menuList.push({id: Helper.makeId(8), name: "", price: ""})
         },
         removeMenu(id) {
-            console.log(this.category.menuList);
             for( var i = 0; i < this.category.menuList.length; i++){ 
                 if ( this.category.menuList[i].id === id) { 
                     this.category.menuList.splice(i, 1); 

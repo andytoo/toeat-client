@@ -13,7 +13,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import UserService from '@/services/UserService'
+import AuthService from '@/services/AuthService'
 import Panel from '@/components/Panel.vue'
 
 export default {
@@ -29,19 +29,20 @@ export default {
         ...mapGetters(['isUserSignedIn'])
     },
     methods: {
-        ...mapActions(['setLoading', 'setMsg', 'updateTokenAndUser']),
+        ...mapActions(['setLoading', 'setMsg', 'setIsUserSignedIn']),
         async doSignIn() {
             this.setLoading(true)
+            
             //TODO VALIDATION
             try {
-                const resp = await UserService.signIn({ "phone": this.phone, "password": this.password })
-                this.updateTokenAndUser({ user: { phone: resp.data.phone, name: resp.data.name, restaurantId: resp.data.restaurantId }, accessToken: resp.data.access_token, refreshToken: resp.data.refresh_token })
+                const resp = await AuthService.signIn({ phone: this.phone, password: this.password })
+                this.setIsUserSignedIn(true)
             
                 this.setMsg("Signed In")
-                setTimeout(() => { this.setMsg(null) }, 1500)
+                // setTimeout(() => { this.setMsg(null) }, 1500)
             } catch (err) {
                 this.setMsg(err.response.data.message)
-                setTimeout(() => { this.setMsg(null) }, 1500)
+                // setTimeout(() => { this.setMsg(null) }, 1500)
 
                 // if (err.response.status === 401) {
                 //     this.signOut()
