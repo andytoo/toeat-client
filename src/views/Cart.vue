@@ -21,7 +21,6 @@ export default {
       this.saveToOrders(resp.data)
     } catch (err) {
       this.setMsg(err.response.data.message)
-      setTimeout(() => { this.setMsg(null) }, 1500)
     }
 
     this.setLoading(false)
@@ -30,7 +29,7 @@ export default {
     ...mapActions(['setLoading', 'setMsg', 'saveToOrders'])
   },
   computed: {
-    ...mapGetters(['orders', 'isLoading'])
+    ...mapGetters(['orders'])
   }
 }
 </script>

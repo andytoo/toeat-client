@@ -34,7 +34,7 @@ export default {
         ...mapGetters(['isUserSignedIn'])
     },
     methods: {
-        ...mapActions(['setLoading', 'setMsg', 'setIsUserSignedIn']),
+        ...mapActions(['setLoading', 'setMsg']),
         async doSignUp() {
 
             //TODO VALIDATION
@@ -47,17 +47,13 @@ export default {
 
             try {
                 const resp = await AuthService.signUp({ "phone": this.phone, "name": this.name, "password": this.password, "confirm": this.confirm })
-                this.setIsUserSignedIn(true)
-
                 this.setMsg("Signed Up")
-                setTimeout(() => { this.setMsg(null) }, 1500)
             } catch (err) {
                 this.setMsg(err.response.data.message)
-                setTimeout(() => { this.setMsg(null) }, 1500)
             }
             
             if (this.isUserSignedIn) {
-                this.$router.push({ name: 'Cart' })//TODO PROFILE / EDIT RESTAURANT
+                this.$router.push({ name: 'Cart' })
             }
 
             this.setLoading(false)

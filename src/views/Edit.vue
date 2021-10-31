@@ -31,7 +31,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import RestaurantService from '@/services/RestaurantService'
 
-import Helper from '@/helpers/Helper'
+import CommonUtils from '@/utils/CommonUtils'
 
 export default {
     components: {
@@ -51,16 +51,16 @@ export default {
             title: null,
             button: null,
             category: {
-                id: Helper.makeId(8),
+                id: CommonUtils.makeId(8),
                 name: "",
-                menuList: [{id: Helper.makeId(8), name: "", price: ""}]
+                menuList: [{id: CommonUtils.makeId(8), name: "", price: ""}]
             }
         }
     },
     methods: {
         ...mapActions(['setLoading', 'setMsg']),
         doAdd() {
-            this.category.menuList.push({id: Helper.makeId(8), name: "", price: ""})
+            this.category.menuList.push({id: CommonUtils.makeId(8), name: "", price: ""})
         },
         removeMenu(id) {
             for( var i = 0; i < this.category.menuList.length; i++){ 
@@ -78,13 +78,11 @@ export default {
                 if (this.title === "Edit") {
                     resp = await RestaurantService.updateMenu(this.restaurant.id, this.category)
                     this.setMsg("Saved")
-                    setTimeout(() => { this.setMsg(null) }, 1500)
 
                     //TODO SUCCESS BACK TO PROFILE
                 } else {
                     resp = await RestaurantService.insertMenu(this.restaurant.id, this.category)
                     this.setMsg("Saved")
-                    setTimeout(() => { this.setMsg(null) }, 1500)
 
                     //TODO SUCCESS BACK TO PROFILE
                 }
@@ -92,7 +90,6 @@ export default {
                 
             } catch (err) {
                 this.setMsg(err.response.data.message)
-                setTimeout(() => { this.setMsg(null) }, 1500)
             }
 
             this.setLoading(false)

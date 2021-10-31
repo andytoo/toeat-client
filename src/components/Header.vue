@@ -10,7 +10,8 @@
                 <!-- <router-link class="navbar-menu" v-if="!isUserSignedIn" :to="{ name: 'SignIn' }"><i class="fas fa-sign-in-alt" /> Sign In</router-link>
                 <router-link class="navbar-menu" v-if="!isUserSignedIn" :to="{ name: 'SignUp' }"><i class="fas fa-file-signature" /> Sign Up</router-link> -->
                 <router-link class="navbar-menu" v-if="isUserSignedIn" :to="{ name: 'Profile' }"><i class="fas fa-user" /> {{ user.name }}</router-link>
-                <router-link class="navbar-menu" :to="{ name: 'About' }"><i class="fas fa-address-book"/> About</router-link>
+                <button class="navbar-menu" v-if="isUserSignedIn" @click="signOut"><i class="fas fa-sign-out-alt" /> Sign Out</button>
+                <!-- <router-link class="navbar-menu" :to="{ name: 'About' }"><i class="fas fa-address-book"/> About</router-link> -->
             </div>
         </div>
     </div>
@@ -21,22 +22,27 @@
             <!-- <router-link class="sidebar-menu" v-if="!isUserSignedIn" :to="{ name: 'SignIn' }">Sign In</router-link>
             <router-link class="sidebar-menu" v-if="!isUserSignedIn" :to="{ name: 'SignUp' }">Sign Up</router-link> -->
             <router-link class="sidebar-menu" v-if="isUserSignedIn" :to="{ name: 'Profile' }">{{ user.name }}</router-link>
-            <router-link class="sidebar-menu" :to="{ name: 'About' }">About</router-link>
+            <button class="sidebar-menu mx-auto" v-if="isUserSignedIn" @click="signOut">Sign Out</button>
+            <!-- <router-link class="sidebar-menu" :to="{ name: 'About' }">About</router-link> -->
         </div>
     <div class="right-0" :class="{ 'fixed top-0 right-1/2 bottom-0 left-0 bg-black bg-opacity-50 z-40 left-slide-transition' : sidebar }" @click="toggleSidebar"> </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import AuthService from '@/services/AuthService'
 
 export default {
     data() { return { sidebar: false } },
     methods: { 
-        ...mapActions(['closeMsg']),
-        toggleSidebar() { this.sidebar = !this.sidebar }
+        toggleSidebar() { this.sidebar = !this.sidebar },
+        signOut() {
+            AuthService.signOut()
+            this.$router.push({ name: 'SignIn' })
+        }
     },
     computed: { 
-        ...mapGetters(['isUserSignedIn', 'user']),
+        ...mapGetters(['user', 'isUserSignedIn']),
     }
 }
 </script>

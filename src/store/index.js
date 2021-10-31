@@ -7,8 +7,8 @@ export default createStore({
     isLoading: false,
 
     // User
-    user: TokenService.getUser(),
-    isUserSignedIn: false,
+    user: TokenService.getUser() || {},
+    isUserSignedIn: TokenService.isUserSignedIn() || false,
 
     // Restaurant Data
     orders: [],
@@ -20,6 +20,9 @@ export default createStore({
     },
     setLoading: (state, data) => {
       state.isLoading = data
+    },
+    setUser: (state, data) => {
+      state.user = data
     },
     setIsUserSignedIn: (state, data) => {
       state.isUserSignedIn = data
@@ -39,11 +42,10 @@ export default createStore({
     setLoading: ({commit}, data) => {
       commit('setLoading', data)
     },
-    setIsUserSignedIn: ({commit}, data) => {
-      commit('setIsUserSignedIn', data);
-    },
-    closeMsg: ({commit}) => {
-      commit('setMsg', { msg: null, isErr: null })
+    setUser: ({commit}, data) => {
+      commit('setUser', data)
+      if (Object.keys(data).length === 0) commit('setIsUserSignedIn', false)
+      else commit('setIsUserSignedIn', true)
     },
     saveToOrders: ({commit}, orders) => {
       commit('saveToOrders', orders)
@@ -58,8 +60,8 @@ export default createStore({
   getters: {
     msg: state => state.msg,
     isLoading: state => state.isLoading,
-    isUserSignedIn: state => state.isUserSignedIn,
     user: state => state.user,
+    isUserSignedIn: state => state.isUserSignedIn,
     orders: state => state.orders,
     restaurant: state => state.restaurant,
     getCategory: state => name => state.restaurant.categoryList.find(category => category.name == name),

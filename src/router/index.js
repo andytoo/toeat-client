@@ -6,7 +6,7 @@ import Cart from '../views/Cart.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
 import Profile from '../views/Profile.vue'
-import About from '../views/About.vue'
+// import About from '../views/About.vue'
 import Edit from '../views/Edit.vue'
 
 const routes = [
@@ -30,11 +30,11 @@ const routes = [
     name: 'Profile',
     component: Profile,
   },
-  {
-    path: '/about',
-    name: 'About',
-    component: About
-  },
+  // {
+  //   path: '/about',
+  //   name: 'About',
+  //   component: About
+  // },
   {
     path: '/new',
     name: 'New',
@@ -55,11 +55,13 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page  
   const publicPages = ['/signIn', '/signUp']
-  const authRequired =  !publicPages.includes(to.path)
-  const loggedIn = store.state.isUserSignedIn
+  const authRequired = !publicPages.includes(to.path)
+  let loggedIn = store.state.isUserSignedIn
 
   if (authRequired && !loggedIn) {
     return next('/signIn');
+  } else if (!authRequired && loggedIn) {
+    return next('/');
   }
 
   next();

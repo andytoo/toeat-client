@@ -62,7 +62,6 @@ export default {
             this.image = imageResp.data
         } catch (err) {
             this.setMsg(err.response.data.message)
-            setTimeout(() => { this.setMsg(null) }, 1500)
         }
 
         this.setLoading(false)
@@ -75,10 +74,8 @@ export default {
                 const resp = await RestaurantService.updateRest(this.restaurant)
                 
                 this.setMsg("Saved")
-                setTimeout(() => { this.setMsg(null) }, 1500)
             } catch (err) {
                 this.setMsg(err.response.data.message)
-                setTimeout(() => { this.setMsg(null) }, 1500)
             }
             this.setLoading(false)
         },
@@ -96,10 +93,8 @@ export default {
                 this.image = imageResp.data
 
                 this.setMsg("Image Uploaded")
-                setTimeout(() => { this.setMsg(null) }, 1500)
             } catch (err) {
                 this.setMsg(err.response.data.message)
-                setTimeout(() => { this.setMsg(null) }, 1500)
             }
             this.setLoading(false)
 

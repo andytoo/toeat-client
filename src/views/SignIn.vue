@@ -29,20 +29,17 @@ export default {
         ...mapGetters(['isUserSignedIn'])
     },
     methods: {
-        ...mapActions(['setLoading', 'setMsg', 'setIsUserSignedIn']),
+        ...mapActions(['setLoading', 'setMsg']),
         async doSignIn() {
             this.setLoading(true)
             
             //TODO VALIDATION
             try {
                 const resp = await AuthService.signIn({ phone: this.phone, password: this.password })
-                this.setIsUserSignedIn(true)
-            
+
                 this.setMsg("Signed In")
-                // setTimeout(() => { this.setMsg(null) }, 1500)
             } catch (err) {
                 this.setMsg(err.response.data.message)
-                // setTimeout(() => { this.setMsg(null) }, 1500)
 
                 // if (err.response.status === 401) {
                 //     this.signOut()
