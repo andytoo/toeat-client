@@ -9,24 +9,42 @@ import Order from '@/components/Order.vue'
 
 import { mapActions, mapGetters } from 'vuex'
 
-import RestaurantService from '@/services/RestaurantService'
+import OrderService from '@/services/OrderService'
+import TokenService from '@/services/TokenService'
+
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
+
+let socket = null
 
 export default {
   components: { Order },
   async created() {
-    this.setLoading(true)
+    socket = new SockJS(`${process.env.VUE_APP_API_URL}/ws`)
+    const client = Stomp.over(socket)
+    client.connect({}, frame => {
+      client.subscribe(`/topic/order/${TokenService.getRestaurantId()}`, payload => {
+        const data = JSON.parse(payload.body)
+        this.addOrders(data)
+      })
+    })
 
+    this.setLoading(true)
     try {
-      const resp = await RestaurantService.getOrders()
-      this.saveToOrders(resp.data)
+      const resp = await OrderService.getOrders()
+      this.setOrders(resp.data)
     } catch (err) {
       this.setMsg(err.response.data.message)
     }
-
     this.setLoading(false)
   },
+  unmounted(){
+    if (socket != null) {
+      socket.close();
+    }
+  },
   methods: {
-    ...mapActions(['setLoading', 'setMsg', 'saveToOrders'])
+    ...mapActions(['setLoading', 'setMsg', 'setOrders', 'addOrders'])
   },
   computed: {
     ...mapGetters(['orders'])

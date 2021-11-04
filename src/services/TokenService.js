@@ -9,6 +9,11 @@ class TokenService {
         return user?.refreshToken;
     }
 
+    getRestaurantId() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        return user?.restaurantId;
+    }
+
     updateLocalAccessToken(accessToken, refreshToken) {
         let user = JSON.parse(localStorage.getItem("user"));
         user.accessToken = accessToken;

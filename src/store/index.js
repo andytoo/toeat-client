@@ -27,8 +27,11 @@ export default createStore({
     setIsUserSignedIn: (state, data) => {
       state.isUserSignedIn = data
     },
-    saveToOrders: (state, orders) => {
+    setOrders: (state, orders) => {
       state.orders = orders
+    },
+    addOrders: (state, order) => {
+      state.orders.push(order)
     },
     saveToRestaurant: (state, restaurant) => {
       state.restaurant = restaurant
@@ -47,8 +50,11 @@ export default createStore({
       if (Object.keys(data).length === 0) commit('setIsUserSignedIn', false)
       else commit('setIsUserSignedIn', true)
     },
-    saveToOrders: ({commit}, orders) => {
-      commit('saveToOrders', orders)
+    setOrders: ({commit}, orders) => {
+      commit('setOrders', orders)
+    },
+    addOrders: ({commit}, order) => {
+      commit('addOrders', order)
     },
     saveToRestaurant: ({commit}, restaurant) => {
       commit('saveToRestaurant', restaurant)

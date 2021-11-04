@@ -2,9 +2,6 @@ import api from '@/services/Api'
 import store from '@/store/index'
 
 export default {
-    getOrders() {
-        return api.get(`/api/order/all/${store.state.user.restaurantId}`)
-    },
     getRestaurant() {
         return api.get(`/api/restaurant/${store.state.user.restaurantId}`)
     },
