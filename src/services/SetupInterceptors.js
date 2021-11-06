@@ -34,7 +34,7 @@ const setup = () => {
                 // Access Token was expired
                 if (err.response.status === 401) {
                     try {
-                        const rs = await axiosInstance.post("/user/refreshToken", {
+                        const rs = await axiosInstance.post("/client/refreshToken", {
                             refreshToken: TokenService.getLocalRefreshToken(),
                         })
 
