@@ -65,7 +65,7 @@ export default {
         removeMenu(id) {
             for( var i = 0; i < this.category.menuList.length; i++){ 
                 if ( this.category.menuList[i].id === id) { 
-                    this.category.menuList.splice(i, 1); 
+                    this.category.menuList.splice(i, 1)
                 }
             }
         },

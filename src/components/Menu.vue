@@ -15,7 +15,7 @@ export default {
     props: { menu: Object },
     methods: {
         removeMenu({id}) {
-            this.$emit('menuId', id);
+            this.$emit('menuId', id)
         }
     }
 }

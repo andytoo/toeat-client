@@ -40,7 +40,7 @@ export default {
   },
   unmounted(){
     if (socket != null) {
-      socket.close();
+      socket.close()
     }
   },
   methods: {

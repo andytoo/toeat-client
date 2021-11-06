@@ -36,7 +36,7 @@ export default {
             }
         },
         async decline() {
-            this.order.status = '-1'
+            this.order.status = '99'
             try {
                 const resp = OrderService.updateOrderStatus(this.order)
             } catch (err) {

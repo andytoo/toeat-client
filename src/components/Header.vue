@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import AuthService from '@/services/AuthService'
 
 export default {

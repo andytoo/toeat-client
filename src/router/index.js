@@ -59,12 +59,11 @@ router.beforeEach((to, from, next) => {
   let loggedIn = store.state.isUserSignedIn
 
   if (authRequired && !loggedIn) {
-    return next('/signIn');
+    return next('/signIn')
   } else if (!authRequired && loggedIn) {
-    return next('/');
+    return next('/')
   }
-
-  next();
+  next()
 })
 
 export default router
