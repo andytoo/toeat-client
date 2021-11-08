@@ -2,6 +2,8 @@ import axiosInstance from '@/services/Api'
 import TokenService from '@/services/TokenService'
 import AuthService from '@/services/AuthService'
 
+import store from '@/store/index'
+
 const setup = () => {
     axiosInstance.interceptors.request.use(
         (config) => {
@@ -22,8 +24,7 @@ const setup = () => {
         },
         async (err) => {
             const originalConfig = err.config
-
-            if (originalConfig.url === "/user/refreshToken" && err.response) {
+            if (originalConfig.url === "/client/refreshToken" && err.response) {
                 // Refresh Token was expired
                 if (err.response.status === 401 ) {
                     AuthService.signOut()
@@ -34,13 +35,25 @@ const setup = () => {
                 // Access Token was expired
                 if (err.response.status === 401) {
                     try {
-                        const rs = await axiosInstance.post("/client/refreshToken", {
+                        if (!TokenService.getUser()) {
+                            AuthService.signOut()
+                        }
+
+                        const response = await axiosInstance.post("/client/refreshToken", {
                             refreshToken: TokenService.getLocalRefreshToken(),
                         })
+                        
+                        if (response.data) {
+                            const user = { phone: response.data.phone, 
+                                           name: response.data.name, 
+                                           restaurantId: response.data.restaurantId, 
+                                           accessToken:  response.data.accessToken, 
+                                           refreshToken: response.data.refreshToken 
+                                         }
+                            store.dispatch('setUser', user)
+                            localStorage.setItem('user', JSON.stringify(user))
+                        }
 
-                        const { accessToken } = rs.data
-                        //   store.dispatch('auth/refreshToken', accessToken)
-                        TokenService.updateLocalAccessToken(accessToken, refreshToken)
                         return axiosInstance(originalConfig)
                     } catch (_err) {
                         return Promise.reject(_err)
